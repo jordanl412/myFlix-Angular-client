@@ -16,20 +16,39 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 
 export class UserFavoriteMoviesComponent {
+  /**
+   * Receive and keep info from API calls
+   * @mfavoriteMovies - array of favorite movie ids from user's list of favorite movies
+   * @user - JSON object of the specific user
+   */
   favoriteMovies: any[] = [];
   user: any = {};
 
+  /**
+   * @constructor - sets dependencies
+   * @param fetchApiData - use functions to make API calls
+   * @param dialog - call dialog with Genre, Director, Synopsis buttons
+   * @param snackBar - show message that function was successful or an error
+   */
   constructor(
     public fetchApiData: UserRegistrationService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar
   ) {}
 
+  /**
+   * This function calls specified methods automatically, straight after Component has mounted
+   * @function getFavoriteMovies
+   */
   ngOnInit(): void {
     this.getFavoriteMovies();
     console.log(this.favoriteMovies)
   }
 
+  /**
+   * This function makes API call to get list of movies on user's list of favorite movies
+   * @function getFavoriteMovies
+   */
   getFavoriteMovies(): void {
     this.fetchApiData.getUser().subscribe((user: any) => {
       this.user = user;
@@ -39,10 +58,21 @@ export class UserFavoriteMoviesComponent {
     });
   }
 
+  /**
+   * This function checks whether a movie is included in a user's list of favorite movies
+   * @function isFavorite
+   * @param id type of string - id of a specific movie
+   * @returns boolean
+   */
   isFavorite(id: string): boolean {
     return this.user.FavortieMovies.includes(id);
   }
 
+  /**
+   * This function makes API call to add a movie to a user's list of favorite movies
+   * @function addToFavorites
+   * @param id type of string - id of specifc movie
+   */
   addToFavorites(id: string): void {
     this.fetchApiData.addFavoriteMovie(id).subscribe((result) => {
       this.snackBar.open('Movie added to favorites', 'OK', {
@@ -52,6 +82,11 @@ export class UserFavoriteMoviesComponent {
     });
   }
 
+  /**
+   * This function makes API call to delete a specific movie from a user's list of favorite movies
+   * @function removeFromFavorites
+   * @param id type of string - id of specific movie
+   */
   removeFromFavorites(id: string): void {
     this.fetchApiData.removeFavoriteMovie(id).subscribe((result) => {
       this.snackBar.open('Movie removed from favorites', 'OK', {
@@ -61,6 +96,12 @@ export class UserFavoriteMoviesComponent {
     });
   }
 
+  /**
+   * This function opens a dialog with detailed information about a specific genre
+   * @function openGenreDialog
+   * @param name of specific genre
+   * @param description of specific genre
+   */
   openGenre(name: string, description: string): void {
     this.dialog.open(GenreComponent, {
       data: {
@@ -71,6 +112,13 @@ export class UserFavoriteMoviesComponent {
     });
   }
 
+  /**
+   * This function opens a dialog with detailed information about a specific director
+   * @function openDirectorDialog
+   * @param name of specific director
+   * @param bio of specific director
+   * @param birthday birth year of specific director
+   */
   openDirector(name: string, bio: string, birthday: string): void {
     this.dialog.open(DirectorComponent, {
       data: {
@@ -82,6 +130,12 @@ export class UserFavoriteMoviesComponent {
     });
   }
 
+  /**
+   * This function opens a dialog with detailed information about a specific movie
+   * @function openSummary
+   * @param title of specific movie
+   * @param description of specific movie
+   */
   openSummary(title: string, description: string): void {
     this.dialog.open(MovieDetailsComponent, {
       data: {
