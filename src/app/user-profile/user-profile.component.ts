@@ -5,6 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 
+/**
+ *@Component decorator to tell Angular that the class right below is a component.
+ */
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -12,11 +15,21 @@ import { formatDate } from '@angular/common';
 })
 
 export class UserProfileComponent implements OnInit {
+  /**
+   * These variables receivee and keep info from API calls
+   * @user - keeps info about specific user
+   * @movies - keeps array of JSON  objects of all movies available in the database
+   * @favorites - keeps array of user's favorite movies, by id
+   */
   user: any = {};
   movies: any[] = [];
   initialInput: any = {};
   favorites: any = [];
 
+  /**
+   * The updatedUser object will then be passed into the API call in the registerUser function
+   * @userData object contains: @Username (required), @Password (required), @Email (required), and @Birthday
+   */
 @Input() updatedUser = {
   Username: '',
   Password: '',
@@ -24,6 +37,13 @@ export class UserProfileComponent implements OnInit {
   Birthday: ''
 };
 
+/**
+ * @constructor arguments are then available through "this" method
+ * @param fetchApiData  to use functions to make API calls
+ * @param dialogRef to open the user profile component
+ * @param snackBar to show message whether the user was successfully logged in or not
+ * @param router to navigate the user to welcome screen
+ */
 constructor(
   public fetchApiData: UserRegistrationService,
   public dialogRef: MatDialogRef<UserProfileComponent>,
@@ -31,10 +51,18 @@ constructor(
   private router: Router
 ) {}
 
+/**
+ * This function calls specified methods automatically, straight after component is mounted
+ */
 ngOnInit(): void {
   this.getUserInfo();
 }
 
+/**
+ * This function makes an API call to get the user from the database
+ * @function getUserInfo
+ * @returns JSON object with user information
+ */
 getUserInfo(): void {
   this.fetchApiData.getUser().subscribe((resp: any) => {
     this.user = resp;
@@ -47,6 +75,10 @@ getUserInfo(): void {
   });
 }
 
+  /**
+   * This function makes an API call to update user data (username, password, email, and/or birthday)
+   * @function updateUserInfo
+   */
   updateUserInfo(): void {
     this.fetchApiData.editUser(this.updatedUser).subscribe((result) => {
       console.log(result);
@@ -68,6 +100,10 @@ getUserInfo(): void {
     }); 
   }
 
+  /**
+   * This function makes an API call to delete the user data for specific user
+   * @function deleteAccount
+   */
   deleteAccount(): void {
     if (confirm('All your data will be lost - this action cannot be undone.')) {
       this.router.navigate(['welcome']).then(() => {
