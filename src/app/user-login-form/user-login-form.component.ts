@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { UserRegistrationService } from '../user-registration.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterModule, Router } from '@angular/router';
 

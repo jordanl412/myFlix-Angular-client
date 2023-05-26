@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { UserRegistrationService } from '../user-registration.service';
 import { DirectorComponent } from '../director/director.component';
 import { GenreComponent } from '../genre/genre.component';
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
